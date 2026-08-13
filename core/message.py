@@ -91,4 +91,24 @@ class Message:
         return self.role == other.role and self.content == other.content
 
     def __add__(self, other):
-        """msg1 """
+        """msg1 + msg2 = new message with combined content"""
+        if not isinstance(other, Message):
+            raise TypeError(f"Cannot add Message and {type(other).__name__} ")
+        combined = self.content + " " + other.content
+        return Message(self.role, combined, {**self.metadata, **other.metadata})
+
+    def __contains__(self, word):
+        """'hello' in msg -> checks if word in content."""
+        return word.lower() in self.content.lower()
+
+    def __iter__(self):
+        """for word in msg -> iterates over words."""
+        return iter(self._tokens)
+
+    def to_dict(self):
+        return{
+            "id"              : self._id,
+            "role"            : self.role,
+            "content"         : self.content,
+            "metadata"        : self.metadata,
+        }
