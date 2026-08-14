@@ -77,4 +77,36 @@ class Memory:
             "trimmed"      : self.__trim_count,
             "by_role"      : role_counts,
         }
+    # --- Private methods ------------------------------------------------------
+    def __trim(self):
+        """Remove oldest messages to stay within max_size."""
+        while len(self.__messages) > self.__max_size:
+            self.__messages.pop(0)
+            self.__trim_count += 1
+
+    # --Dunder Methods ----------------------------------------------------------
+    def __len__(self):
+        return len(self.__messages)
+
+    def __iter__(self):
+        return iter(self.__messages)
+
+    def __contains__(self, message):
+        return message in self.__messages
+
+    def __getitem__(self, index):
+        return self.__messages[index]
+
+    def __str__(self):
+        if self.is_empty:
+            return "Memory(empty)"
+        lines = [f"Memory({len(self)}/{self.max_size} messages):"]
+        for msg in self.__messages[-3:]:
+            lines.append(f"  {msg.role:>10}: {msg.preview}")
+        return "\n".join(lines)
+
+    def __repr__(self):
+        return f"Memory(max_size={self.__max_size}, sorted={len(self)})"
+    
+
     
