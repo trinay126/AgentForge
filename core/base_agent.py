@@ -84,3 +84,49 @@ class BaseAgent(ABC):
 
     def clear_memory(self):
         self._memory.clear()
+
+    #-- Class methods --------------------------------------------------------------------------
+    @classmethod
+    def get_agent(cls,name):
+        return cls._agent_registry.get(name)
+
+    @classmethod
+    def list_all_agents(cls):
+        return len(cls._agent_registry)
+
+    #-- Internal helper for subclass --------------------------------------------------
+    def execute(self, user_input):
+        """
+        Shared pre/post logic wrapping each run() call.
+        saves to memory, increments counter.
+        subclasses call this instead of run() directly.
+        """
+
+        self._run_count += 1
+        user_msg = Message.user(user_input)
+        self._memory.add(user_msg)
+        response = self.run(user_input)
+        asst_msg = Message.assistant(response)
+        self._memory.add(asst_msg)
+        return response
+
+    #-- Dunder methods -----------------------------------------------------------------------------
+    def __str__(self):
+        return(f"Agent({self.name!r}, type={self.agent_type}),"
+               f"model={self.model!r}, tools={self.tool_names}")
+
+    def __repr__(self):
+        return f"{self.__class__.__name__}(name={self.name!r})"
+
+    def __call__(self, user_input):
+        """Makes agent callable: agent('Hello') === agent._execute('Hello')"""
+        return self._execute(user_input)
+
+    def __contains__(self, tool_name):
+        """'Calculator' in agent -> checks if tool registered."""
+        return tool_name in self._tools
+
+    def __len__(self):
+        """len(agent) -> number of tools registered"""
+        return len(self._tools)
+    
