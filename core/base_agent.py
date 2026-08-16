@@ -54,4 +54,33 @@ class BaseAgent(ABC):
     def tool_names(self):
         return list(self._tools.keys())
 
-        
+    #-- Tool management -----------------------------------------------------------------
+    def add_tool(self, tool):
+        """Add a tool to this agent. Duck typing - any objext with .name and .run() works."""
+        if not(hasattr(tool, "name") and hasattr(tool, "run")):
+            raise TypeError(f"Tool must have 'name' and 'run' attributes")
+        self._tools[tool.name] = tool
+        return self
+
+    def remove_tool(self, tool_name):
+        if tool_name in self._tools:
+            del self._tools[tool_name]
+
+    def use_tool(self, tool_name, input_text):
+        """use a tool by name. Returns tool result or error message"""
+        if tool_name not in self._tools:
+            return f"Tool '{tool_name}' not available. Available: {self.tool_names}"
+        return self._tools[tool_name](input_text)
+
+    def has_tool(self,tool_name):
+        return tool_name in self._tools
+
+    #-- Memory helpers -------------------------------------------------------------------------
+    def rembember(self, message):
+        self._memory.add(message)
+
+    def recall(self, n=5):
+        return self._memory.last(n)
+
+    def clear_memory(self):
+        self._memory.clear()
