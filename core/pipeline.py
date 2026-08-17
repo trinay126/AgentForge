@@ -76,3 +76,20 @@ class Pipeline:
     #-- Dunder methods --------------------------------------------------------------------------
     def __len__(self):
         return len(self._stages)
+
+    def __iter__(self):
+        return iter(self._stages)
+
+    def __getitem__(self, index):
+        return self._stages[index]
+
+    def __str__(self):
+        names = " → ".join(
+            getattr(s, "name", s.__class__.__name__)
+            for s in self._stages
+        )
+        return f"Pipeline('{self.name}' : {names})"
+
+    def __repr__(self):
+        return f"Pipeline(name={self.name!r}, stages={len(self)})"
+    
