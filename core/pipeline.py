@@ -62,4 +62,17 @@ class Pipeline:
     def log(self):
         return self._log
 
-    
+    #-- Operator overloading --------------------------------------------------------------------
+    def __or__(self, other):
+        "pipeline | agent -> adds agent to pipeline and returns self"
+        self.add(other)
+        return self
+
+    def __ror__(self, other):
+        """agent | pipeline -> adds agent to FRONT of pipeline."""
+        self._stages.insert(0, other)
+        return self
+
+    #-- Dunder methods --------------------------------------------------------------------------
+    def __len__(self):
+        return len(self._stages)
