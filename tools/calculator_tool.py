@@ -44,4 +44,36 @@ class CalculatorTool(BaseTool):
                         return self._clean_expression(text)
         return None
 
+    def _clean_expression(self, text):
+        """Removal natural language words, keep math."""
+        words_to_remove = [
+            "calculate", "compute", "evaluate", "what", "is",
+            "the", "value", "of", "solve", "find", "please", "result"
+        ]
+        parts = text.lower().split()
+        kept = [p for p in parts if p not in words_to_remove]
+        return " ".join(kept)
+
+    def _safe_eval(self, expression):
+        """Evaluate a mathematical expression safely without using eval"""
+        expression = expression.strip()
+        #try to evaluate using only safe characters
+        allowed = set("0123456789 +-*/.()%")
+        if not all(c in allowed for c in expression):
+            return "ERROR: unsupported characters in expressions"
+        #Use python's Built-in eval for afe math expressions only
+        result = eval(expression)
+        if isinstance(result, float) and result == int(result):
+            return int(result)
+        if isinstance(result, float):
+            return round(result, 6)
+        return result
+
+    # -- Static utility ---------------------------------------------------------
+    @staticmethod
+    def _is_math_query(text):
+        """Quick check if text looks like a math questions."""
+        math_chars = set("0123456789+-*/^()")
+        return any(c in math_chars for c in text)
+
     
