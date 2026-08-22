@@ -75,5 +75,7 @@ class CalculatorTool(BaseTool):
         """Quick check if text looks like a math questions."""
         math_chars = set("0123456789+-*/^()")
         return any(c in math_chars for c in text)
+    
+    
 
     
