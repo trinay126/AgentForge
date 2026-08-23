@@ -26,3 +26,42 @@ class SearchTool(BaseTool):
     }
 
     
+    @property
+    def name(self):
+        return "web_search"
+
+    @property
+    def description(self):
+        return "Search for information. Input: topic or question. Returns relevant information."
+
+    def run(self, query):
+        """Search for the query in the knowledge base."""
+        query_lower = query.lower()
+        result = self._find_best_match(query_lower)
+        return f"search result for '{query}' : {result}"
+
+    def _find_best_match(self, query):
+        """Find the most relevant entry in the knowledge base."""
+        #check for exact keyword match first
+        for key, value in self._KNOWLEDGE_BASE.items():
+            if key in query:
+                return value
+
+        #check if any word in the query matches a key
+        query_words = set(query.split())
+        for key, value in self._KNOWLEDGE_BASE.items():
+            key_words = set(key.split())
+            if query_words & key_words:
+                return value
+
+        return self._KNOWLEDGE_BASE["default"]
+
+    @staticmethod
+    def format_result(query, result, source="AgentForge Knowledge Base"):
+        return f"[{source}]\nQuery: {query}\nResult: {result}"
+
+    @classmethod
+    def available_topics(cls):
+        """Return all searchable topics (except 'default')"""
+        return [k for k in cls._KNOWLEDGE_BASE if k != "default"]
+    
