@@ -48,4 +48,45 @@ class ChatAgent(LoggingMixin, BaseAgent):
 
         # Default response
         return self._default_response(user_input)
-    
+
+    # -- Private response generators ------------------------------------------------------------------------------
+    def _greet(self, user_input):
+        context = ""
+        if len(self.memory) > 0:
+            context = "Welcome back!"
+        return (f"Hello! I'm {self.name}, your {self.personality} assistant. {context}" f"How can i help you today?")
+
+    def _answer_question(self, question):
+        #check if we can use a tool
+        for tool_name, tool in self._tool.items():
+            if any(kw in question.lower() for kw in ["calculate", "compute", "search", "find", "reverse", "sentiment"]):
+                result = self.use_tool(tool_name, question)
+                return f"Great question! Here is what I found : {result}" 
+
+    # Use memory context if available
+        recent = self.memory.last(3)
+        context = f"(Based on our {len(self.memory)} previous messages)" if recent else ""
+        return f"That is a thoughtful question {context}. Let me think about:{question!r}"
+
+    def _pick_tool(self, text):
+        """choose the best tool for the input."""
+        if any(c in text for c in "0123456789") and any(c in text for c in "+-*/"):
+            if "calculator" in self._tools:
+                return "claculator"
+
+        if "reverse" in text or "sentiment" in text or "word" in text:
+            if "text_analyser" in self._tools:
+                return "text_analyser"
+
+        if "search" in text or "what is" in text or "tell me about" in text:
+            if "web_search" in self._tools:
+                return "web_search"
+
+        return "web_search"
+
+    def _default_response(self, text):
+        turn = self.run_count
+        return(f"I understabd you said : {text!r}."
+               f"This is our message #{turn}."
+               f"I have {len(self._tools)} tool(s) available: {self.tool_names}."
+        )
