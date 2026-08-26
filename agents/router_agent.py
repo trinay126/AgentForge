@@ -69,3 +69,26 @@ class RouterAgent(LoggingMixin, BaseAgent):
             "routes"           : counts,
             "registered_types" : list(self._sub_agents()),
         }
+
+    # -- Private routing logic ------------------------------------------
+    def _determine_route(self, text):
+        """Score each agent type and return the best match."""
+        text_lower = text.lower()
+        scores = {t: 0 for t in self._ROUTING_TABLE}
+
+        for agent_type, keywords in self._ROUTING_TABLE.items():
+            for kw in keywords:
+                if kw in text_lower:
+                    scores[agent_type] += 1
+
+        # check for numbers -> likely analyst task
+        has_numbers = any(c.isdigit() for c in text)
+        if has_numbers and "statistics" in text_lower:
+            scores["analyst"] += 3
+
+        best = max(scores, key=scores.get)
+        return best if scores[best] > 0 else "chat"
+
+    def __str__(self):
+        agents = list(self._sub_agents.keys())
+        return f"RouterAgent ({self.name!r}, routes={agents})"
