@@ -23,4 +23,12 @@ def demo_message():
     m3 = Message.system("You are a helpful assistant.")
     m4 = Message.tool_result("Calculator", "42")
 
+    print(f"\nDunder methods: ")
+    print(f" len(m)        = {len(m1)} words")
+    print(f" bool(m1)      = {bool(m1)}")
+    print(f" m1 == m2      = {m1 == m2}") 
+    print(f" m1 == m2      = {m1 == m2} ")
+    print(f" 'Hello' in m1 = {'Hello' in m1}")
+    print(f" 'Bye' in m1   = {'Bye' in m1}")
     
+
