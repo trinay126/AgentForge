@@ -43,6 +43,39 @@ def demo_message():
     print(f" {repr(m4)}")
     print(f" Total messages created: {Message.total_created()}")
 
-    
-    
 
+def demo_tools():
+    print("\n" + "="*60) 
+    print("DEMO 2 - Tools (inheritance, __call__, duck typing)")
+    print("="*60)
+
+    calc = CalculatorTool()
+    text = TextTool()
+    search = SearchTool()
+
+    print(f"\nTool string representations:")
+    print(f"  {calc}")
+    print(f"  {text}") 
+    print(f" {search}") 
+
+    print(f"\Calling tools(via__call__):")
+    print(f" {calc('calculate 2 + 3 * 4')}")
+    print(f" {calc('What is 100 / 4 + 5')}")
+    print(f" {text('analyse: Python is great and amazing')}")
+    print(f" {text('reverse these words: hello world')}")
+    print(f" {search('tell me about fastapi')}")
+    print(f" {search('what is oop')}")
+
+    print(f'\nTool stats (after calls):')
+    for tool in [calc, text, search]:
+        print(f" {tool.name}: called {tool.call_count}x")
+
+    print(f"\nDuck typing - tools stored in registry:")
+    registry = Registry("tools")
+    registry.register(calc)
+    registry.register(text)
+    registry.register(search)
+    print(f" {registry}")
+    print(f" 'calculator' in registry: {'calculator' in registry}")
+    print(f"  Available: {registry.all_names()}")
+    
