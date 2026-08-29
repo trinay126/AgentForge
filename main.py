@@ -30,5 +30,19 @@ def demo_message():
     print(f" m1 == m2      = {m1 == m2} ")
     print(f" 'Hello' in m1 = {'Hello' in m1}")
     print(f" 'Bye' in m1   = {'Bye' in m1}")
+
+    print(f"\nOperator overloading: ")
+    combined = m1 + Message.user("How are you?")
+    print(f" m1+m2 = {combined}")
+
+    print(f"\nIteration:")
+    print(f" Words in m1: {list(m1)}")
+
+    print(f"\nAlternative constructors (@classmethod):")
+    print(f" {repr(m3)}")
+    print(f" {repr(m4)}")
+    print(f" Total messages created: {Message.total_created()}")
+
+    
     
 
