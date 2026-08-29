@@ -78,4 +78,40 @@ def demo_tools():
     print(f" {registry}")
     print(f" 'calculator' in registry: {'calculator' in registry}")
     print(f"  Available: {registry.all_names()}")
+
+def demo_agents():
+    print("\n" + "="*60)
+    print("DEMO 3 - Agents (composition, polymorphism, mixins)")
+    print("="*60)
+
+    # Create tools
+    calc = CalculatorTool()
+    text = TextTool()
+    search = SearchTool()
+
+    # create agents and add tools
+    chat_agent = ChatAgent("chatBot", personality="friendly")
+    (chat_agent
+     .add_tool(calc)
+     .add_tool(text)
+     .add_tool(search))
+
+    analyst_agent = AnalystAgent("DataBot")
+
+    print(f"\nAgent info: ")
+    print(f" {chat_agent}")
+    print(f" {analyst_agent}")
+
+    print(f"\nAgent magic methods: ")
+    print(f" len(chat_agent)             = {len(chat_agent)} tools")
+    print(f" 'calculator' in chat_agent  = {'calculator' in chat_agent}")
+    print(f" 'nonexistent' in chat_agent = {'nonexistent' in chat_agent}")
+
+    print(f"\nChat agent conversations: ")
+    inputs = [
+        "hello there!",
+        "Calculate 150 * 3 + 250",
+        "What is the sentiment of: python is amazing and great!",
+        "What is python?",
+    ]
     
