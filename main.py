@@ -138,3 +138,38 @@ def demo_agents():
 
     print(f"\nAll registered agents: {ChatAgent.list_all_agents()}")
 
+
+def demo_router():
+    print("\n" + "="*60)
+    print("DEMO 4 - ROuterAgent (orchestration, polymorphism, duck typing)")
+    print("="*60)
+
+    # Build the full system
+    chat_agent = ChatAgent("chatBot2", personality="concise")
+    analyst_agent = AnalystAgent("DataBot2")
+    chat_agent.add_tool(SearchTool())
+
+    router = RouterAgent("MainRouter")
+    router.register_agent("chat", chat_agent)
+    router.register_agent("analyst", analyst_agent)
+
+    print(f"\n{router}")
+
+    tasks = [
+        "Hello, how are you?",
+        "Analyse these numbers: 5 10 15 20 25",
+        "Search for langchain",
+        "What is the mean of 4 8 12 16",
+        "Tell me about recursion",
+    ]
+
+    print(f"\nRouting {len(tasks)} tasks: ")
+    for task in tasks:
+        print(f"\n Input : {task}")
+        result = router.run(task)
+        print(f" Output : {result[:80]}...")
+
+    summary = router.routing_summary()
+    print(f"\n Routing summary: {summary}")
+
+    
