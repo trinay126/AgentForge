@@ -114,4 +114,27 @@ def demo_agents():
         "What is the sentiment of: python is amazing and great!",
         "What is python?",
     ]
-    
+    for inp in inputs:
+        print(f"\n User  : {inp}")
+        result = chat_agent(inp)
+        print(f" Agent : {result}")
+
+    print(f"\Analyst agent:")
+    data_queires = [
+        "Analyse this data: 10 20 30 40 50",
+        "Statistics for : 3.5 7.2 1.8 9.1 4.4 6.6"
+    ]
+
+    for q in data_queires:
+        print(f"\n User : {q}")
+        result = analyst_agent(q)
+        print(f" Agent: \n{result}")
+
+    print(f"\nMemory state:")
+    print(f" {chat_agent.memory}")
+    summary = chat_agent.memory.summary()
+    for k,v in summary.items():
+        print(f"  {k}: {v}")
+
+    print(f"\nAll registered agents: {ChatAgent.list_all_agents()}")
+
