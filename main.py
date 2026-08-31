@@ -172,4 +172,5 @@ def demo_router():
     summary = router.routing_summary()
     print(f"\n Routing summary: {summary}")
 
+def demo_pipeline():
     
