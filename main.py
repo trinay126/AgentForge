@@ -173,4 +173,54 @@ def demo_router():
     print(f"\n Routing summary: {summary}")
 
 def demo_pipeline():
-    
+    print("\n" + "="*60)
+    print("DEMO 5 - Pipeline (composition, __or__, chaining)")
+    print("="*60)
+
+    # Custom pipeline stages using duck typing
+    class TextNormaliser:
+        name = "normaliser"
+        def run(self, text):
+            return " ".join(text.lower().split())
+
+    class KeywordExtractor:
+        name = "Keyword_extractor"
+        _stop = {"the", "a", "an", "is", "in", "on", "at", "to", "and", "of", "for"}
+        def run(self, text):
+            words = [w.strip(".,!?") for w in text.split()
+                     if w.lower() not in self._stop and len(w) > 3]
+
+            freq = {}
+            for w in words:
+                freq[w] = freq.get(w, 0) + 1
+            top3 = sorted(freq.items(), key=lambda x: x[1], reverse=True)[:3]
+            return "KEYWORDS: " + " , ".join(f"{w}({c})" for w, c in top3)
+
+    class Summariser:
+        name = "summariser"
+        def run(self, text):
+            words =  text.split()
+            return f"SUMMARY ({len(words)} words): {' '.join(words[:8])}..." 
+
+    normaliser = TextNormaliser()
+    extractor  = KeywordExtractor()
+    summariser = Summariser()
+    analyst    = AnalystAgent("PipelineAnalyst")
+
+    # Build pipeline with | operator (operator overloading)
+    pipeline = pipeline("text_pipeline")
+    pipeline = pipeline | normaliser | extractor
+
+    print(f"\nPipeline : {pipeline}")
+    print(f"Stages : {len(pipeline)}")
+
+    result = pipeline.run(
+        "Python is an amazing language. Python makes data engineering"
+        "and machine learing easy with python tools."
+    )         
+    print(f"\nFinal result: {result}")
+    for entry in pipeline.log():
+        print(f" [{entry['stage']}]")
+        print(f" IN : {entry['input']}")
+        print(f" OUT: {entry['output']}")
+        
