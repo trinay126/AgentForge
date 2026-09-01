@@ -223,4 +223,40 @@ def demo_pipeline():
         print(f" [{entry['stage']}]")
         print(f" IN : {entry['input']}")
         print(f" OUT: {entry['output']}")
-        
+
+def main():
+    print("\n" + "🤖 AgentForge — Mini AI Agent Orchestration Framework".center(60))
+    print("OOP Portfolio project".center(60))
+    print("="*60)
+
+    demo_message()
+    demo_tools()
+    demo_agents()
+    demo_router()
+    demo_pipeline()
+
+    concepts = [
+    ("Abstract Base Classes", "BaseAgent, BaseTool use ABC + @abstractmethod"),
+    ("Inheritance",           "BaseAgent"),
+    ("Multiple Inheritance",  "ChatAgent(LoggingMixin, BaseAgent)"),
+    ("Composition",           "Agent HAS-A Memory, HAS-A Tools dict"),
+    ("Encapsulation",         "Memory hides __messages with properties"),
+    ("Polymorphism",          "Router calls agent.run() — different result per agent"),
+    ("Magic Methods",         "Message: __len__, __add__, __contains__, __iter__"),
+    ("Operator Overloading",  "Pipeline: pipeline | agent adds a stage"),
+    ("Class Methods",         "Message.user(), Message.from_dict()"),
+    ("Static Methods",        "BaseTool.validate_input(), SearchTool.available_topics()"),
+    ("Properties",            "Memory.max_size with getter/setter"),
+    ("Duck Typing",           "Any object with .run() works as agent or pipeline stage"),
+    ("Mixin Pattern",         "LoggingMixin added to agents via multiple inheritance"),
+    ("__call__",              "tool('input') and agent('input') both work directly"),
+    ("Chaining",              "agent.add_tool(a).add_tool(b) via return self"),
+ ]
+
+    for concept, example in concepts:
+        print(f"✅ {concept:<25}: {example}")
+
+if __name__ == "__main__":
+    main()
+
+
