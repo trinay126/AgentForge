@@ -62,12 +62,12 @@ class RouterAgent(LoggingMixin, BaseAgent):
         """Summary of all routing decisions made."""
         counts = {}
         for entry in self._route_log:
-            t = entry["ruted_to"]
+            t = entry['routed_to']
             counts[t] = counts.get(t, 0) + 1
         return {
             "total_routed"     : len(self._route_log),
             "routes"           : counts,
-            "registered_types" : list(self._sub_agents()),
+            "registered_types" : list(self._sub_agents),
         }
 
     # -- Private routing logic ------------------------------------------

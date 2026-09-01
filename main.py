@@ -208,7 +208,7 @@ def demo_pipeline():
     analyst    = AnalystAgent("PipelineAnalyst")
 
     # Build pipeline with | operator (operator overloading)
-    pipeline = pipeline("text_pipeline")
+    pipeline = Pipeline("text_pipeline")
     pipeline = pipeline | normaliser | extractor
 
     print(f"\nPipeline : {pipeline}")
