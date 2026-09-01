@@ -36,7 +36,7 @@ class ChatAgent(LoggingMixin, BaseAgent):
 
         # Question detection
         if lower.endswith("?") or lower.startswith(("what", "how","why","when","who","where")):
-            return self._answer_questions(user_input)
+            return self._answer_question(user_input)
 
         # Tool usage
         if self._tools:
@@ -58,7 +58,7 @@ class ChatAgent(LoggingMixin, BaseAgent):
 
     def _answer_question(self, question):
         #check if we can use a tool
-        for tool_name, tool in self._tool.items():
+        for tool_name, tool in self._tools.items():
             if any(kw in question.lower() for kw in ["calculate", "compute", "search", "find", "reverse", "sentiment"]):
                 result = self.use_tool(tool_name, question)
                 return f"Great question! Here is what I found : {result}" 
@@ -72,7 +72,7 @@ class ChatAgent(LoggingMixin, BaseAgent):
         """choose the best tool for the input."""
         if any(c in text for c in "0123456789") and any(c in text for c in "+-*/"):
             if "calculator" in self._tools:
-                return "claculator"
+                return "calculator"
 
         if "reverse" in text or "sentiment" in text or "word" in text:
             if "text_analyser" in self._tools:
@@ -86,7 +86,7 @@ class ChatAgent(LoggingMixin, BaseAgent):
 
     def _default_response(self, text):
         turn = self.run_count
-        return(f"I understabd you said : {text!r}."
+        return(f"I understand you said : {text!r}."
                f"This is our message #{turn}."
                f"I have {len(self._tools)} tool(s) available: {self.tool_names}."
         )

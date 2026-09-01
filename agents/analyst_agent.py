@@ -30,7 +30,7 @@ class AnalystAgent(LoggingMixin, BaseAgent):
 
         if not numbers:
             self._warn("No numbers found in input")
-            return f"I couldn't find numbers to analyse in : {user_input! r}"
+            return f"I couldn't find numbers to analyse in : {user_input!r}"
 
         stats = self._compute_stats(numbers)
         report = self._build_report(numbers, stats)

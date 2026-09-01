@@ -95,7 +95,7 @@ class BaseAgent(ABC):
         return len(cls._agent_registry)
 
     #-- Internal helper for subclass --------------------------------------------------
-    def execute(self, user_input):
+    def _execute(self, user_input):
         """
         Shared pre/post logic wrapping each run() call.
         saves to memory, increments counter.
