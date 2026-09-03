@@ -443,18 +443,6 @@ This demonstrates the **mixin pattern and multiple inheritance**.
   - `abc`
   - `math`
 
-The project currently does **not** require:
-
-- LangChain
-- LangGraph
-- OpenAI SDK
-- Anthropic SDK
-- Vector databases
-- External APIs
-- Databases
-
-This is intentional: the project focuses on **Python OOP and agent-system architecture**, not API integration.
-
 ---
 
 ## ▶️ Getting Started
@@ -568,129 +556,7 @@ This distinction matters: the project demonstrates the **architecture and OOP me
 
 ---
 
-## 🗺️ Possible Next Steps
 
-If this project is extended beyond the current OOP-focused version, useful additions would include:
-
-1. **LLM Provider Interface**
-   - Add a provider abstraction for OpenAI, Anthropic, local models, etc.
-
-2. **Persistent Memory**
-   - Replace in-memory history with PostgreSQL or another storage backend.
-
-3. **Real Tool Registry**
-   - Support automatic discovery and plugin-style tool loading.
-
-4. **Async Execution**
-   - Allow tools and agents to execute asynchronously.
-
-5. **Structured Tool Inputs**
-   - Replace plain text inputs with typed schemas.
-
-6. **RAG**
-   - Add document ingestion, embeddings, retrieval, and vector storage.
-
-7. **Agent Graphs**
-   - Support branching and conditional workflows instead of only sequential pipelines.
-
-8. **Testing**
-   - Add unit and integration tests for agents, tools, routing, and pipelines.
-
----
-
-## 💼 Why This Works as a Portfolio Project
-
-The strongest part of this project is not the simulated AI behavior.
-
-It is the **software design**.
-
-Instead of demonstrating only:
-
-```text
-Python → API call → print(response)
-```
-
-AgentForge demonstrates:
-
-```text
-Interfaces
-   ↓
-Reusable components
-   ↓
-Composition
-   ↓
-Polymorphism
-   ↓
-Tool abstraction
-   ↓
-Agent specialization
-   ↓
-Routing
-   ↓
-Pipeline orchestration
-```
-
-That gives you concrete material to discuss in interviews around:
-
-- Object-oriented design
-- Python data model methods
-- Abstract classes
-- Composition vs inheritance
-- Multiple inheritance and mixins
-- Duck typing
-- Extensibility
-- Separation of concerns
-- Agent architecture
-
----
-
-## 🎤 Interview Talking Points
-
-### Why did you use OOP?
-
-> "Agent systems naturally contain separate entities such as agents, tools, memory, messages, and pipelines. OOP lets me give each responsibility a clear boundary and define reusable contracts between components."
-
-### Where is composition used?
-
-> "Each agent has a Memory object and a collection of tools. The agent doesn't inherit from Memory or Tool; it composes those objects."
-
-### Where is polymorphism used?
-
-> "RouterAgent works with the common `run()` interface. ChatAgent and AnalystAgent implement that method differently, so the router can delegate without depending on their internal implementations."
-
-### Why duck typing?
-
-> "The Pipeline only needs a stage with a callable `run()` method. It doesn't need to enforce a specific inheritance hierarchy, which makes custom stages easy to add."
-
-### Why use a mixin?
-
-> "LoggingMixin isolates reusable logging behavior from the agent hierarchy. Multiple agent classes can gain logging without duplicating the implementation."
-
-### Is this a real AI agent?
-
-> "The current version is an agent-framework simulation focused on architecture. It models agents, tools, memory, routing, and pipelines, but it does not yet connect to an actual LLM."
-
-That last answer is important. **Don't claim this project uses an LLM when the current implementation does not.**
-
----
-
-## 📌 GitHub Topics
-
-Recommended repository topics:
-
-```text
-python
-oop
-object-oriented-programming
-ai-agents
-agent-framework
-agent-orchestration
-python-project
-software-architecture
-duck-typing
-polymorphism
-portfolio-project
-```
 
 ---
 
@@ -698,13 +564,11 @@ portfolio-project
 
 This project is intended as a learning and portfolio project.
 
-Add a formal open-source license if you plan to distribute or reuse the project publicly.
-
 ---
 
 ## 👨‍💻 Author
 
-**Your Name**
+**Chadalavada Trinay Sai**
 
 Built as a Python OOP portfolio project to explore the architecture behind modular AI-agent systems.
 
